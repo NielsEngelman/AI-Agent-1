@@ -9,40 +9,22 @@
 
 ---
 
-Een Node.js/Express AI agent die via webhooks communiceert met de AI Collega's Hub en gebruikers helpt bij het opstellen van wervende woningadvertenties.
+Een volledig self-contained Node.js/Express AI agent die via webhooks communiceert en gebruikers helpt bij het opstellen van wervende woningadvertenties. **Geen externe database of API nodig!**
 
 ## Features
 - Webhook endpoint voor AI Collega's Hub
 - OpenAI integratie voor tekstgeneratie
-- PostgreSQL-gebaseerde chat memory
+- Lokaal SQLite-gebaseerde chat memory (bestand: `chat_memory.db`)
+- Berichten worden lokaal gelogd (`messages.log`)
 - Veilige en schaalbare Express setup
-- Eenvoudig uitbreidbaar
-
-## Projectstructuur
-```
-project-root/
-├── src/
-│   ├── controllers/
-│   │   └── agentController.js
-│   ├── services/
-│   │   ├── openaiService.js
-│   │   ├── memoryService.js
-│   │   └── messageService.js
-│   ├── middleware/
-│   │   └── validation.js
-│   ├── routes/
-│   │   └── webhook.js
-│   ├── config/
-│   │   └── database.js
-│   └── app.js
-├── .env
-├── server.js
-├── package.json
-└── README.md
-```
+- Eenvoudig te installeren en te deployen
 
 ## Installatie
 1. **Clone het project**
+   ```bash
+   git clone https://github.com/NielsEngelman/AI-Agent-1.git
+   cd AI-Agent-1
+   ```
 2. **Installeer dependencies:**
    ```bash
    npm install
@@ -51,12 +33,8 @@ project-root/
    ```env
    PORT=3000
    OPENAI_API_KEY=your_openai_api_key_here
-   DATABASE_URL=your_postgres_connection_string
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_KEY=your_supabase_key
    NODE_ENV=development
    ```
-4. **Configureer je PostgreSQL database** (zie `src/config/database.js`)
 
 ## Gebruik
 - **Start de server in development mode:**
@@ -78,39 +56,25 @@ project-root/
 - **Health check:**
   - GET: `http://localhost:3000/health`
 
-## Testen
-Test de webhook endpoint met bijvoorbeeld curl:
-```bash
-curl -X POST http://localhost:3000/webhook/f3de5429-2a5e-45f2-a2eb-f69b61feb3f8 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "body": {
-      "message": "Hallo, ik wil graag hulp bij het maken van een advertentie",
-      "sessionId": "test-session-123",
-      "agentId": "makelaardij-agent"
-    }
-  }'
-```
+## Data opslag
+- Chat memory wordt opgeslagen in `chat_memory.db` (SQLite, lokaal bestand)
+- Alle verstuurde berichten worden gelogd in `messages.log`
 
-## Deployment
-- Zet environment variabelen op je hosting platform
-- Configureer PostgreSQL database
-- Zorg voor HTTPS in productie
-- Implementeer rate limiting indien nodig
-- Voeg logging/monitoring toe (bijv. Winston)
+## Pushen naar GitHub
+1. Voeg je wijzigingen toe:
+   ```bash
+   git add .
+   git commit -m "Jouw commit boodschap"
+   git push origin main
+   ```
 
-## Uitbreidingsmogelijkheden
-- Authenticatie voor webhook endpoints
-- Message queueing (bijv. Redis/Bull)
-- File upload functionaliteit
-- A/B testing voor prompts
-- Analytics en usage tracking
+## (Her)installeren via README
+- Volg de installatie-instructies hierboven of klik op de Cloud Shell/Azure knop bovenaan deze README voor one-click deployment.
 
 ## Belangrijk
-- Vervang alle placeholder waarden in `.env` met echte credentials
-- Test alle endpoints voordat je naar productie gaat
-- Implementeer proper error handling en logging
-- Zorg voor database backup strategie
+- Alleen een OpenAI API key is vereist.
+- Geen externe database of API nodig.
+- Alles draait lokaal of in je eigen cloudomgeving.
 
 ---
 

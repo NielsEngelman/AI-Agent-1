@@ -1,8 +1,6 @@
-const { Pool } = require('pg');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
+const db = new sqlite3.Database(path.join(__dirname, '../../chat_memory.db'));
 
-module.exports = pool; 
+module.exports = db; 
