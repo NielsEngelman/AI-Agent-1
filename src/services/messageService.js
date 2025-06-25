@@ -1,13 +1,26 @@
-const fs = require('fs');
-const path = require('path');
+const axios = require('axios');
 
 class MessageService {
   async sendMessageToHub(sessionId, message, agentId) {
-    // Log het bericht lokaal in een bestand (optioneel kun je dit uitbreiden)
-    const logPath = path.join(__dirname, '../../messages.log');
-    const logEntry = `${new Date().toISOString()} | sessionId: ${sessionId} | agentId: ${agentId} | message: ${message}\n`;
-    fs.appendFileSync(logPath, logEntry);
-    return { success: true, message: 'Message logged locally' };
+    const url = process.env.SUPABASE_URL || 'https://mkihypczxepmedfgpoqq.supabase.co/functions/v1/send-message';
+    
+    try {
+      const response = await axios.post(url, {
+        sessionId,
+        message,
+        agentId
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SUPABASE_KEY}`
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error sending message to hub:', error);
+      throw new Error('Failed to send message to hub');
+    }
   }
 }
 

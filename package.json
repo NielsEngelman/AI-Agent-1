@@ -1,7 +1,7 @@
 {
   "name": "makelaardij-ai-agent",
   "version": "1.0.0",
-  "description": "AI agent voor Makelaardij Kerremans (Node.js/Express, self-contained)",
+  "description": "AI agent voor Makelaardij Kerremans (Node.js/Express)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,7 +15,8 @@
     "morgan": "^1.10.0",
     "dotenv": "^16.4.5",
     "openai": "^4.30.0",
-    "sqlite3": "^5.1.6",
+    "axios": "^1.6.8",
+    "pg": "^8.11.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
