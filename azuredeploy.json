@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": { "type": "string", "metadata": { "description": "Naam van de Web App" } },
+    "OPENAI_API_KEY": { "type": "string" },
+    "DATABASE_URL": { "type": "string" },
+    "SUPABASE_URL": { "type": "string" },
+    "SUPABASE_KEY": { "type": "string" }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[concat(parameters('appName'),'-plan')]",
+      "location": "[resourceGroup().location]",
+      "sku": { "name": "B1", "tier": "Basic" },
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('appName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', concat(parameters('appName'),'-plan'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', concat(parameters('appName'),'-plan'))]",
+        "siteConfig": {
+          "appSettings": [
+            { "name": "OPENAI_API_KEY", "value": "[parameters('OPENAI_API_KEY')]" },
+            { "name": "DATABASE_URL", "value": "[parameters('DATABASE_URL')]" },
+            { "name": "SUPABASE_URL", "value": "[parameters('SUPABASE_URL')]" },
+            { "name": "SUPABASE_KEY", "value": "[parameters('SUPABASE_KEY')]" },
+            { "name": "NODE_ENV", "value": "production" },
+            { "name": "PORT", "value": "3000" }
+          ]
+        }
+      }
+    }
+  ]
+} 

@@ -1,0 +1,32 @@
+# Makelaardij AI Agent Deployen op Google Cloud Run
+
+Welkom! Met deze tutorial kun je deze Node.js agent eenvoudig deployen op Google Cloud Run.
+
+## 1. Docker image bouwen
+
+```sh
+gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/makelaardij-ai-agent
+```
+
+## 2. Deploy naar Cloud Run
+
+```sh
+gcloud run deploy makelaardij-ai-agent \
+  --image gcr.io/$GOOGLE_CLOUD_PROJECT/makelaardij-ai-agent \
+  --platform managed \
+  --region europe-west4 \
+  --allow-unauthenticated \
+  --set-env-vars PORT=3000,OPENAI_API_KEY=VUL_HIER_IN,DATABASE_URL=VUL_HIER_IN,SUPABASE_URL=VUL_HIER_IN,SUPABASE_KEY=VUL_HIER_IN,NODE_ENV=production
+```
+
+> Vul de environment variabelen in met jouw eigen waarden.
+
+## 3. Webhook URL
+
+Na deployment vind je de URL in de Cloud Run console, bijvoorbeeld:
+
+```
+https://makelaardij-ai-agent-<hash>-uc.a.run.app/webhook/f3de5429-2a5e-45f2-a2eb-f69b61feb3f8
+```
+
+Gebruik deze URL in de AI Collega's Hub. 
